@@ -1,4 +1,4 @@
-package com.mmt.complaintform.web;
+package com.mmt.complaintform;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
