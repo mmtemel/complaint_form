@@ -37,7 +37,7 @@ public class ComplaintRepositooryInMemoryImpl implements ComplaintRepository{
         complaint3.setEvaluated(false);
 
         Complaint complaint4 = new Complaint();
-        complaint4.setId(1L);
+        complaint4.setId(4L);
         complaint4.setSubject("Employer");
         complaint4.setDescription("bad employer");
         complaint4.setEvaluated(false);

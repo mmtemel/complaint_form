@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr style="font-size: bold; background-color: lightgreen;">
+                <td>ID</td>
+                <td>Subject</td>
+                <td>Description</td>
+                <td>Evaluted</td>
+            </tr>
+        </thead>
+        <th:block th:each="complaint, iterStat:${complaints}">
+            <tr th:bgcolor="${iterStat.odd}?white:lightgray">
+                <td th:text="${complaint.id}"/>
+                <td th:text="${complaint.subject}"/>
+                <td th:text="${complaint.description}"/>
+                <td th:text="${complaint.evaluated}"/>
+            </tr>
+        </th:block>
+    </table>
+</body>
+</html>

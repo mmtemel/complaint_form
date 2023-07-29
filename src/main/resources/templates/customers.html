@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <link th:href="@{/css/complaintform.css}" type="text/css" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <title>title</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr style="font-size: bold; background-color: lightgreen;">
+                <td>ID</td>
+                <td>Name</td>
+                <td>Surname</td>
+                <td>Info</td>
+            </tr>
+        </thead>
+        <th:block th:each="customer, iterStat:${customers}">
+            <tr th:bgcolor="${iterStat.odd}?white:lightgray">
+                <td th:text="${customer.id}"/>
+                <td th:text="${customer.name}"/>
+                <td th:text="${customer.surname}"/>
+                <td th:text="${customer.info}"/>
+            </tr>
+        </th:block>
+    </table>
+</body>
+</html>
