@@ -3,6 +3,12 @@ package com.mmt.complaintform.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@XmlRootElement
 public class Customer {
     private long id;
     private String name;
@@ -43,6 +49,8 @@ public class Customer {
         this.info = info;
     }
 
+    @XmlTransient
+    @JsonIgnore
     public Set<Complaint> getComplaints() {
         return complaints;
     }

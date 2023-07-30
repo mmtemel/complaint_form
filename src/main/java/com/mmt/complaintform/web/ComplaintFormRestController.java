@@ -4,8 +4,11 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.*;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.mmt.complaintform.exception.CustomerNotFoundException;
+import com.mmt.complaintform.exception.InternalServerException;
 import com.mmt.complaintform.model.Complaint;
 import com.mmt.complaintform.model.Customer;
 import com.mmt.complaintform.service.ComplaintFormService;
@@ -48,6 +52,21 @@ public class ComplaintFormRestController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /* @RequestMapping(method = RequestMethod.GET, value = "/customer/{id}",produces="application/json")
+	public ResponseEntity<?> getCustomerAsHateoasEntityModel(@PathVariable("id") Long id) {
+		try {
+			Customer customer = complaintFormService.findCustomer(id);
+			Link self = WebMvcLinkBuilder.linkTo(ComplaintFormRestController.class).slash("/customer/" + id).withSelfRel();
+			Link create = WebMvcLinkBuilder.linkTo(ComplaintFormRestController.class).slash("/customer").withRel("create");
+			Link update = WebMvcLinkBuilder.linkTo(ComplaintFormRestController.class).slash("/customer/" + id).withRel("update");
+			Link delete = WebMvcLinkBuilder.linkTo(ComplaintFormRestController.class).slash("/customer/" + id).withRel("delete");
+			EntityModel<Customer> resource = new EntityModel<Customer>(customer, self, create, update, delete);
+			return ResponseEntity.ok(resource);
+		} catch (CustomerNotFoundException ex) {
+			return ResponseEntity.notFound().build();
+		}
+	} */
 
     //complaint get
     @RequestMapping(method = RequestMethod.GET, value="/complaints")
@@ -99,6 +118,32 @@ public class ComplaintFormRestController {
 			return ResponseEntity.notFound().build();
 		} catch (Exception ex) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+    //customer delete
+    /* @RequestMapping(method = RequestMethod.DELETE, value = "/customer/{id}")
+	public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long id) {
+		try {
+			complaintFormService.deleteCustomer(id);
+            return ResponseEntity.ok().build();
+		} catch (CustomerNotFoundException ex) {
+			return ResponseEntity.notFound().build();
+		} catch (Exception ex) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	} */
+
+    //customer delete 2
+    @RequestMapping(method = RequestMethod.DELETE, value = "/customer/{id}")
+    public void deleteCustomer(@PathVariable("id") Long id) {
+		try {
+			complaintFormService.findCustomer(id);
+			complaintFormService.deleteCustomer(id);
+		} catch (CustomerNotFoundException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			throw new InternalServerException(ex);
 		}
 	}
 }

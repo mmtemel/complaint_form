@@ -7,10 +7,14 @@ import java.util.stream.Collectors;
 
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.mmt.complaintform.model.Customer;
@@ -88,4 +92,28 @@ public class ComplaintFormRestControllerTests {
 
         MatcherAssert.assertThat(customer.getName(), Matchers.equalTo("Kerem Mıhtar"));
     }
+
+    /* @Test
+	public void testDeleteCustomer() {
+		restTemplate.delete("http://localhost:8080/rest/customer/4");
+
+        try{
+            restTemplate.getForEntity("http://localhost:8080/rest/customer/4", Customer.class);
+            Assert.fail("should have not returned customer");
+        } catch (RestClientException ex) {
+
+        }
+	} */
+
+    @Test
+	public void testDeleteCustomer() {
+		restTemplate.delete("http://localhost:8080/rest/customer/4");
+
+        try{
+            restTemplate.getForEntity("http://localhost:8080/rest/customer/4", Customer.class);
+            Assert.fail("should have not returned customer");
+        } catch (HttpClientErrorException ex) {
+            MatcherAssert.assertThat(ex.getStatusCode().value(), Matchers.equalTo(404));
+        }
+	}
 }
